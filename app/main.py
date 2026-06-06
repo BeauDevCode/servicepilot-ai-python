@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 
@@ -7,15 +9,18 @@ from app.routes import ai_assistant, analytics, api, customers, dashboard, invoi
 from app.seed_data import seed_demo_data
 
 settings_obj = get_settings()
-app = FastAPI(title=settings_obj.app_name, description=settings_obj.app_tagline, version="1.0.0")
-app.mount("/static", StaticFiles(directory=BASE_DIR / "app" / "static"), name="static")
 
 
-@app.on_event("startup")
-def on_startup() -> None:
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     init_db()
     if settings_obj.demo_mode:
         seed_demo_data()
+    yield
+
+
+app = FastAPI(title=settings_obj.app_name, description=settings_obj.app_tagline, version="1.0.0", lifespan=lifespan)
+app.mount("/static", StaticFiles(directory=BASE_DIR / "app" / "static"), name="static")
 
 
 @app.middleware("http")

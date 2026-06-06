@@ -19,8 +19,12 @@
       <select class="input" name="status"><option value="">All statuses</option>{% for s in statuses %}<option value="{{ s.value }}" {% if status == s.value %}selected{% endif %}>{{ s.value }}</option>{% endfor %}</select>
       <button class="btn-secondary">Filter</button>
     </form>
-    <div class="grid gap-3">{% for customer in customers %}{% include "components/customer_card.html" %}{% endfor %}</div>
+    <div class="grid gap-3">
+      {% for customer in customers %}{% include "components/customer_card.html" %}{% endfor %}
+      {% if not customers %}
+        {% with title="No customers found", message="Add a customer manually or create one from an AI intake message.", href="/ai-assistant", action="Use AI Intake" %}{% include "components/empty_state.html" %}{% endwith %}
+      {% endif %}
+    </div>
   </section>
 </div>
 {% endblock %}
-

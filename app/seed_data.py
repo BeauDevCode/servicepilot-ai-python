@@ -1,5 +1,5 @@
 import json
-from datetime import date, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 
 from sqlmodel import Session, select
 
@@ -24,9 +24,9 @@ def seed_demo_data() -> None:
             session.refresh(customer)
 
         jobs = [
-            Job(customer_id=customers[0].id, title="Brake inspection for Honda Accord", description="Grinding sound when braking on a 2008 Honda Accord.", service_type="Mobile Mechanic", status=JobStatus.scheduled, priority=Priority.high, scheduled_date=datetime.utcnow() + timedelta(days=2), location=customers[0].address, checklist="Confirm vehicle details\nInspect pads and rotors\nPrepare parts estimate", estimated_price=320),
-            Job(customer_id=customers[1].id, title="Two-bedroom deep clean", description="Apartment deep clean with pets in the home.", service_type="Cleaning", status=JobStatus.quoted, priority=Priority.medium, scheduled_date=datetime.utcnow() + timedelta(days=5), location=customers[1].address, checklist="Confirm parking\nBring pet-safe products\nDeep clean kitchen and bath", estimated_price=240),
-            Job(customer_id=customers[2].id, title="Graduation portrait session", description="Outdoor portrait package with edited gallery.", service_type="Photography", status=JobStatus.completed, priority=Priority.medium, scheduled_date=datetime.utcnow() - timedelta(days=8), location=customers[2].address, estimated_price=450, final_price=450),
+            Job(customer_id=customers[0].id, title="Brake inspection for Honda Accord", description="Grinding sound when braking on a 2008 Honda Accord.", service_type="Mobile Mechanic", status=JobStatus.scheduled, priority=Priority.high, scheduled_date=datetime.now(UTC) + timedelta(days=2), location=customers[0].address, checklist="Confirm vehicle details\nInspect pads and rotors\nPrepare parts estimate", estimated_price=320),
+            Job(customer_id=customers[1].id, title="Two-bedroom deep clean", description="Apartment deep clean with pets in the home.", service_type="Cleaning", status=JobStatus.quoted, priority=Priority.medium, scheduled_date=datetime.now(UTC) + timedelta(days=5), location=customers[1].address, checklist="Confirm parking\nBring pet-safe products\nDeep clean kitchen and bath", estimated_price=240),
+            Job(customer_id=customers[2].id, title="Graduation portrait session", description="Outdoor portrait package with edited gallery.", service_type="Photography", status=JobStatus.completed, priority=Priority.medium, scheduled_date=datetime.now(UTC) - timedelta(days=8), location=customers[2].address, estimated_price=450, final_price=450),
             Job(customer_id=customers[3].id, title="Spring yard cleanup", description="Mulch, trimming, and lawn cleanup.", service_type="Landscaping", status=JobStatus.needs_info, priority=Priority.low, location=customers[3].address, estimated_price=275),
         ]
         session.add_all(jobs)

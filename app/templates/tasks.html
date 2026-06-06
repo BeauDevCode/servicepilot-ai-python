@@ -28,8 +28,10 @@
         </div>
       </div>
       {% endfor %}
+      {% if not tasks %}
+        {% with title="No tasks found", message="Follow-ups, reminders, and review requests will appear here.", href="/ai-assistant", action="Create Follow-Up" %}{% include "components/empty_state.html" %}{% endwith %}
+      {% endif %}
     </div>
   </section>
 </div>
 {% endblock %}
-

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlmodel import Session, col, select
 
@@ -31,9 +31,8 @@ def create_job(session: Session, **data: object) -> Job:
 def update_job(session: Session, job: Job, **data: object) -> Job:
     for key, value in data.items():
         setattr(job, key, value)
-    job.updated_at = datetime.utcnow()
+    job.updated_at = datetime.now(UTC)
     session.add(job)
     session.commit()
     session.refresh(job)
     return job
-

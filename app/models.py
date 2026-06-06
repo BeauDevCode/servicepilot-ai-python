@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 from enum import Enum
 
 from sqlalchemy import Column, Text
@@ -53,7 +53,7 @@ class Customer(SQLModel, table=True):
     status: CustomerStatus = CustomerStatus.active
     notes: str | None = Field(default=None, sa_column=Column(Text))
     tags: str | None = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     jobs: list["Job"] = Relationship(back_populates="customer")
     quotes: list["Quote"] = Relationship(back_populates="customer")
@@ -76,8 +76,8 @@ class Job(SQLModel, table=True):
     estimated_price: float = 0
     final_price: float = 0
     source_message: str | None = Field(default=None, sa_column=Column(Text))
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     customer: Customer | None = Relationship(back_populates="jobs")
     quotes: list["Quote"] = Relationship(back_populates="job")
@@ -98,7 +98,7 @@ class Quote(SQLModel, table=True):
     status: QuoteStatus = QuoteStatus.draft
     notes: str | None = Field(default=None, sa_column=Column(Text))
     terms: str | None = Field(default="Valid for 14 days. Payment due upon completion.", sa_column=Column(Text))
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     customer: Customer | None = Relationship(back_populates="quotes")
     job: Job | None = Relationship(back_populates="quotes")
@@ -118,7 +118,7 @@ class Invoice(SQLModel, table=True):
     amount_paid: float = 0
     due_date: date | None = None
     status: InvoiceStatus = InvoiceStatus.draft
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     customer: Customer | None = Relationship(back_populates="invoices")
     job: Job | None = Relationship(back_populates="invoices")
@@ -138,7 +138,7 @@ class Task(SQLModel, table=True):
     due_date: date | None = None
     priority: Priority = Priority.medium
     completed: bool = False
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     customer: Customer | None = Relationship(back_populates="tasks")
     job: Job | None = Relationship(back_populates="tasks")
@@ -153,4 +153,3 @@ class BusinessSettings(SQLModel, table=True):
     default_tax_rate: float = 8.25
     default_service_area: str = "Local service area"
     preferred_currency: str = "USD"
-

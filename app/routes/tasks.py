@@ -5,6 +5,7 @@ from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
 from app.database import get_session
+from app.forms import optional_int
 from app.models import Customer, Job, Priority
 from app.services.task_service import complete_task, create_task, list_tasks
 from app.templating import templates
@@ -15,9 +16,9 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 @router.get("")
 def tasks_page(request: Request, completed: bool | None = None, session: Session = Depends(get_session)):
     return templates.TemplateResponse(
+        request,
         "tasks.html",
         {
-            "request": request,
             "active": "tasks",
             "tasks": list_tasks(session, completed),
             "customers": list(session.exec(select(Customer))),
@@ -29,9 +30,25 @@ def tasks_page(request: Request, completed: bool | None = None, session: Session
 
 
 @router.post("")
-def add_task(title: str = Form(...), description: str | None = Form(None), customer_id: int | None = Form(None), job_id: int | None = Form(None), due_date_value: str | None = Form(None), priority: Priority = Form(Priority.medium), session: Session = Depends(get_session)):
+def add_task(
+    title: str = Form(...),
+    description: str | None = Form(None),
+    customer_id: str | None = Form(None),
+    job_id: str | None = Form(None),
+    due_date_value: str | None = Form(None),
+    priority: Priority = Form(Priority.medium),
+    session: Session = Depends(get_session),
+):
     due = date.fromisoformat(due_date_value) if due_date_value else None
-    create_task(session, title=title, description=description, customer_id=customer_id, job_id=job_id, due_date=due, priority=priority)
+    create_task(
+        session,
+        title=title,
+        description=description,
+        customer_id=optional_int(customer_id),
+        job_id=optional_int(job_id),
+        due_date=due,
+        priority=priority,
+    )
     return RedirectResponse("/tasks", status_code=303)
 
 

@@ -6,6 +6,7 @@ from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
 from app.database import get_session
+from app.forms import optional_int
 from app.models import Customer, InvoiceStatus, Job
 from app.services.invoice_service import create_invoice, get_invoice, list_invoices, mark_paid
 from app.templating import templates
@@ -16,9 +17,9 @@ router = APIRouter(prefix="/invoices", tags=["invoices"])
 @router.get("")
 def invoices_page(request: Request, status: str | None = None, session: Session = Depends(get_session)):
     return templates.TemplateResponse(
+        request,
         "invoices.html",
         {
-            "request": request,
             "active": "invoices",
             "invoices": list_invoices(session, status),
             "customers": list(session.exec(select(Customer))),
@@ -30,11 +31,17 @@ def invoices_page(request: Request, status: str | None = None, session: Session 
 
 
 @router.post("")
-def add_invoice(customer_id: int | None = Form(None), job_id: int | None = Form(None), description: str = Form(...), amount: float = Form(...), session: Session = Depends(get_session)):
+def add_invoice(
+    customer_id: str | None = Form(None),
+    job_id: str | None = Form(None),
+    description: str = Form(...),
+    amount: float = Form(...),
+    session: Session = Depends(get_session),
+):
     create_invoice(
         session,
-        customer_id=customer_id,
-        job_id=job_id,
+        customer_id=optional_int(customer_id),
+        job_id=optional_int(job_id),
         line_items=json.dumps([{"description": description, "quantity": 1, "unit_price": amount}]),
         subtotal=amount,
         total=amount,
@@ -49,7 +56,7 @@ def invoice_detail(invoice_id: int, request: Request, session: Session = Depends
     invoice = get_invoice(session, invoice_id)
     if not invoice:
         raise HTTPException(404)
-    return templates.TemplateResponse("invoice_detail.html", {"request": request, "active": "invoices", "invoice": invoice})
+    return templates.TemplateResponse(request, "invoice_detail.html", {"active": "invoices", "invoice": invoice})
 
 
 @router.post("/{invoice_id}/paid")

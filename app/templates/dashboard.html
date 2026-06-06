@@ -15,6 +15,9 @@
     <div class="section-head"><h2>Recent Customer Requests</h2><a href="/jobs">View all</a></div>
     <div class="mt-4 grid gap-3">
       {% for job in recent_jobs %}{% include "components/job_card.html" %}{% endfor %}
+      {% if not recent_jobs %}
+        {% with title="No requests yet", message="Paste a customer message in AI Intake to create your first workflow.", href="/ai-assistant", action="Create Job From Message" %}{% include "components/empty_state.html" %}{% endwith %}
+      {% endif %}
     </div>
   </section>
   <section class="panel">
@@ -33,12 +36,11 @@
   </section>
   <section class="panel">
     <h2 class="text-base font-semibold text-white">Revenue Summary</h2>
-    <div class="mt-4 space-y-3">{% for invoice in invoices %}<p class="flex justify-between text-sm"><span class="text-slate-300">{{ invoice.invoice_number }}</span><span>{{ invoice.total|money }}</span></p>{% endfor %}</div>
+    <div class="mt-4 space-y-3">{% for invoice in invoices %}<p class="flex justify-between text-sm"><span class="text-slate-300">{{ invoice.invoice_number }}</span><span>{{ invoice.total|money }}</span></p>{% else %}<p class="text-sm text-slate-500">No invoices yet.</p>{% endfor %}</div>
   </section>
   <section class="panel">
     <h2 class="text-base font-semibold text-white">Jobs By Status</h2>
-    <div class="mt-4 space-y-3">{% for job in recent_jobs %}<p class="flex justify-between text-sm"><span class="text-slate-300">{{ job.title }}</span><span>{{ job.status.value }}</span></p>{% endfor %}</div>
+    <div class="mt-4 space-y-3">{% for job in recent_jobs %}<p class="flex justify-between gap-3 text-sm"><span class="text-slate-300">{{ job.title }}</span><span>{{ job.status.value }}</span></p>{% else %}<p class="text-sm text-slate-500">No job status data yet.</p>{% endfor %}</div>
   </section>
 </div>
 {% endblock %}
-

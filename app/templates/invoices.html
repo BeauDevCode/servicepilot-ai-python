@@ -13,8 +13,12 @@
   </section>
   <section>
     <form class="mb-4 flex gap-3"><select class="input" name="status"><option value="">All statuses</option>{% for s in statuses %}<option value="{{ s.value }}" {% if status == s.value %}selected{% endif %}>{{ s.value }}</option>{% endfor %}</select><button class="btn-secondary">Filter</button></form>
-    <div class="grid gap-3">{% for invoice in invoices %}{% include "components/invoice_card.html" %}{% endfor %}</div>
+    <div class="grid gap-3">
+      {% for invoice in invoices %}{% include "components/invoice_card.html" %}{% endfor %}
+      {% if not invoices %}
+        {% with title="No invoices found", message="Create an invoice manually or convert an accepted quote when work is approved.", href="/quotes", action="Review Quotes" %}{% include "components/empty_state.html" %}{% endwith %}
+      {% endif %}
+    </div>
   </section>
 </div>
 {% endblock %}
-

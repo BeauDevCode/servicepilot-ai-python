@@ -2,9 +2,9 @@
   <div class="flex items-start justify-between">
     <div>
       <h3 class="font-semibold text-white">{{ quote.quote_number }}</h3>
-      <p class="mt-1 text-sm text-slate-400">{{ quote.total|money }} · {{ quote.created_at|date }}</p>
+      <p class="mt-1 text-sm text-slate-400">{{ quote.total|money }} · {{ quote.customer.name if quote.customer else "No customer" }} · {{ quote.created_at|date }}</p>
+      {% if quote.notes %}<p class="mt-2 line-clamp-2 text-sm text-slate-500">{{ quote.notes }}</p>{% endif %}
     </div>
     {% with status=quote.status.value %}{% include "components/status_badge.html" %}{% endwith %}
   </div>
 </a>
-

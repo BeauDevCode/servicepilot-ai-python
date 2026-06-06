@@ -7,4 +7,4 @@ router = APIRouter()
 
 @router.get("/")
 def landing_page(request: Request):
-    return templates.TemplateResponse("landing.html", {"request": request, "active": "landing"})
+    return templates.TemplateResponse(request, "landing.html", {"active": "landing"})

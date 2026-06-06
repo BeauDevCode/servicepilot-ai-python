@@ -25,8 +25,12 @@
       <select class="input" name="service_type"><option value="">All services</option>{% for s in services %}<option value="{{ s }}" {% if service_type == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select>
       <button class="btn-secondary">Filter</button>
     </form>
-    <div class="grid gap-3">{% for job in jobs %}{% include "components/job_card.html" %}{% endfor %}</div>
+    <div class="grid gap-3">
+      {% for job in jobs %}{% include "components/job_card.html" %}{% endfor %}
+      {% if not jobs %}
+        {% with title="No jobs found", message="Create a job manually or let AI build one from a customer message.", href="/ai-assistant", action="Create Job From Message" %}{% include "components/empty_state.html" %}{% endwith %}
+      {% endif %}
+    </div>
   </section>
 </div>
 {% endblock %}
-

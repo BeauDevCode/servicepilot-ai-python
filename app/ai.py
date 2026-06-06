@@ -40,7 +40,7 @@ def mock_extract_request(message: str) -> ExtractedRequest:
     email_match = re.search(r"[\w.+-]+@[\w-]+\.[\w.-]+", message)
     name_match = re.search(r"(?:my name is|i'?m|this is)\s+([A-Z][a-z]+)", message, re.I)
     bedrooms = re.search(r"(\d+)\s*(?:bed|bedroom|br)", lower)
-    vehicle = re.search(r"((?:19|20)\d{2}\s+[a-z]+\s+[a-z0-9 ]+)", lower)
+    vehicle = re.search(r"((?:19|20)\d{2}\s+[a-z]+(?:\s+(?!and\b|it\b|with\b|that\b|making\b)[a-z0-9-]+){0,2})", lower)
 
     if service == "Mobile Mechanic":
         title = "Brake or vehicle repair request" if "brake" in lower else "Mobile mechanic request"
@@ -114,4 +114,3 @@ async def extract_request(message: str) -> ExtractedRequest:
         return ExtractedRequest.model_validate(json.loads(content))
     except Exception:
         return mock_extract_request(message)
-

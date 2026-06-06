@@ -5,6 +5,7 @@ from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
 from app.database import get_session
+from app.forms import optional_int
 from app.models import Customer, JobStatus, Priority
 from app.services.job_service import create_job, get_job, list_jobs, update_job
 from app.templating import templates
@@ -17,9 +18,9 @@ def jobs_page(request: Request, q: str | None = None, status: str | None = None,
     customers = list(session.exec(select(Customer)))
     services = sorted({job.service_type for job in list_jobs(session)})
     return templates.TemplateResponse(
+        request,
         "jobs.html",
         {
-            "request": request,
             "active": "jobs",
             "jobs": list_jobs(session, q, status, service_type),
             "customers": customers,
@@ -35,7 +36,7 @@ def jobs_page(request: Request, q: str | None = None, status: str | None = None,
 
 @router.post("")
 def add_job(
-    customer_id: int | None = Form(None),
+    customer_id: str | None = Form(None),
     title: str = Form(...),
     description: str = Form(...),
     service_type: str = Form("General Service"),
@@ -49,7 +50,7 @@ def add_job(
     scheduled = datetime.fromisoformat(scheduled_date) if scheduled_date else None
     job = create_job(
         session,
-        customer_id=customer_id,
+        customer_id=optional_int(customer_id),
         title=title,
         description=description,
         service_type=service_type,
@@ -67,7 +68,7 @@ def job_detail(job_id: int, request: Request, session: Session = Depends(get_ses
     job = get_job(session, job_id)
     if not job:
         raise HTTPException(404)
-    return templates.TemplateResponse("job_detail.html", {"request": request, "active": "jobs", "job": job, "statuses": JobStatus, "priorities": Priority})
+    return templates.TemplateResponse(request, "job_detail.html", {"active": "jobs", "job": job, "statuses": JobStatus, "priorities": Priority})
 
 
 @router.post("/{job_id}")

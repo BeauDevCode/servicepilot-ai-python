@@ -5,6 +5,7 @@ from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
 from app.database import get_session
+from app.forms import optional_int
 from app.models import Customer, Job, QuoteStatus
 from app.services.quote_service import convert_quote_to_invoice, create_quote, get_quote, list_quotes
 from app.templating import templates
@@ -15,9 +16,9 @@ router = APIRouter(prefix="/quotes", tags=["quotes"])
 @router.get("")
 def quotes_page(request: Request, status: str | None = None, session: Session = Depends(get_session)):
     return templates.TemplateResponse(
+        request,
         "quotes.html",
         {
-            "request": request,
             "active": "quotes",
             "quotes": list_quotes(session, status),
             "customers": list(session.exec(select(Customer))),
@@ -29,11 +30,17 @@ def quotes_page(request: Request, status: str | None = None, session: Session = 
 
 
 @router.post("")
-def add_quote(customer_id: int | None = Form(None), job_id: int | None = Form(None), description: str = Form(...), amount: float = Form(...), session: Session = Depends(get_session)):
+def add_quote(
+    customer_id: str | None = Form(None),
+    job_id: str | None = Form(None),
+    description: str = Form(...),
+    amount: float = Form(...),
+    session: Session = Depends(get_session),
+):
     create_quote(
         session,
-        customer_id=customer_id,
-        job_id=job_id,
+        customer_id=optional_int(customer_id),
+        job_id=optional_int(job_id),
         line_items=json.dumps([{"description": description, "quantity": 1, "unit_price": amount}]),
         subtotal=amount,
         total=amount,
@@ -46,7 +53,7 @@ def quote_detail(quote_id: int, request: Request, session: Session = Depends(get
     quote = get_quote(session, quote_id)
     if not quote:
         raise HTTPException(404)
-    return templates.TemplateResponse("quote_detail.html", {"request": request, "active": "quotes", "quote": quote, "statuses": QuoteStatus})
+    return templates.TemplateResponse(request, "quote_detail.html", {"active": "quotes", "quote": quote, "statuses": QuoteStatus})
 
 
 @router.post("/{quote_id}/convert")

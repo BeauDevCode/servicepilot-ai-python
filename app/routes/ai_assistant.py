@@ -18,13 +18,13 @@ DEFAULT_MESSAGE = "hey bro can you come saturday to fix my brakes i got a 2008 h
 
 @router.get("")
 def ai_page(request: Request):
-    return templates.TemplateResponse("ai_assistant.html", {"request": request, "active": "ai", "message": DEFAULT_MESSAGE, "result": None})
+    return templates.TemplateResponse(request, "ai_assistant.html", {"active": "ai", "message": DEFAULT_MESSAGE, "result": None})
 
 
 @router.post("")
 async def analyze_message(request: Request, message: str = Form(...)):
     result = await extract_request(message)
-    return templates.TemplateResponse("ai_assistant.html", {"request": request, "active": "ai", "message": message, "result": result})
+    return templates.TemplateResponse(request, "ai_assistant.html", {"active": "ai", "message": message, "result": result})
 
 
 @router.post("/create-workflow")

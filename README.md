@@ -1,24 +1,45 @@
 # ServicePilot AI
 
+[![CI](https://github.com/BeauDevCode/servicepilot-ai-python/actions/workflows/ci.yml/badge.svg)](https://github.com/BeauDevCode/servicepilot-ai-python/actions/workflows/ci.yml)
+
 **Turn messy customer requests into organized jobs, quotes, invoices, and follow-ups.**
 
-ServicePilot AI is a Python-first FastAPI web app for small local service businesses and freelancers. It helps mobile mechanics, cleaners, tutors, landscapers, photographers, handymen, barbers, and student entrepreneurs turn scattered texts, DMs, emails, and phone notes into a usable business workflow.
+ServicePilot AI is a Python-first SaaS MVP for small local service businesses and freelancers. It helps mobile mechanics, cleaners, tutors, landscapers, photographers, handymen, barbers, and student entrepreneurs convert scattered texts, DMs, emails, and phone notes into durable business records.
 
-## What It Proves
+## Why This Project Matters
 
-- Production-style FastAPI app structure
-- Jinja2 templates with HTMX-ready server rendering
-- SQLite persistence with SQLModel relationships
-- Real CRUD flows for customers, jobs, quotes, invoices, tasks, settings, and analytics
-- OpenAI integration through `OPENAI_API_KEY`
-- Strong mock AI fallback when no API key exists
-- Secure environment variable handling
-- Tests with pytest
-- Ruff linting
-- Docker and Docker Compose
-- GitHub Actions CI
+ServicePilot AI is a vertical workflow SaaS app, not a generic chatbot. The AI assistant does not stop at a conversational answer. It turns messy customer language into structured records: customers, jobs, quote drafts, invoices, follow-up tasks, checklists, and customer-ready messages.
 
-## Core Workflow
+That makes the app useful as a real small-business workflow and strong as a portfolio project because it shows backend modeling, product thinking, UI design, AI integration, testing, Docker, and CI in one coherent Python application.
+
+## Screenshots
+
+| Dashboard | AI Intake |
+| --- | --- |
+| ![Dashboard](docs/screenshots/dashboard.png) | ![AI Intake](docs/screenshots/ai-assistant.png) |
+
+| Customers | Jobs |
+| --- | --- |
+| ![Customers](docs/screenshots/customers.png) | ![Jobs](docs/screenshots/jobs.png) |
+
+| Quotes | Invoices |
+| --- | --- |
+| ![Quotes](docs/screenshots/quotes.png) | ![Invoices](docs/screenshots/invoices.png) |
+
+| Landing | Analytics |
+| --- | --- |
+| ![Landing](docs/screenshots/landing.png) | ![Analytics](docs/screenshots/analytics.png) |
+
+## Recruiter Quick Review
+
+- **Backend:** FastAPI routes, dependency-injected database sessions, SQLModel persistence, Pydantic AI schema validation.
+- **Frontend:** Server-rendered Jinja2 templates, HTMX-ready forms, Tailwind CSS, polished dark SaaS dashboard.
+- **AI:** OpenAI integration behind `OPENAI_API_KEY`, with deterministic mock mode when no key exists.
+- **Data model:** Customers, jobs, quotes, invoices, tasks, and business settings with real relationships.
+- **Quality:** pytest, Ruff, GitHub Actions, Dockerfile, Docker Compose, seeded demo data, and clear docs.
+- **Security basics:** Secrets live in environment variables; `.env` and SQLite database files are ignored.
+
+## User Workflow
 
 Paste a messy customer message:
 
@@ -28,17 +49,74 @@ hey bro can you come saturday to fix my brakes i got a 2008 honda accord and it 
 
 ServicePilot AI extracts:
 
-- Customer and contact details
-- Service category
-- Job title and description
-- Vehicle, property, or project details
-- Urgency and preferred timing
-- Missing information to ask for
-- Suggested quote range
-- Checklist
-- Customer follow-up message
+- customer name/contact details when available
+- service category
+- job title and description
+- vehicle, property, or project details
+- urgency and preferred timing
+- missing information to ask for
+- suggested quote range
+- job checklist
+- follow-up message
 
-Then it can create a customer, job, quote draft, and follow-up task in one click.
+Then one click creates:
+
+- customer profile
+- job ticket
+- quote draft
+- follow-up task
+
+## Features
+
+- AI job intake from messy texts, DMs, emails, and phone notes
+- Customer CRM with notes, tags, lifetime value, and related records
+- Job tracking with statuses, priorities, scheduling, checklists, and notes
+- Quote generator with professional quote detail pages
+- Invoice tracker with balances, paid status, and reminder messages
+- Task checklist for calls, confirmations, reminders, and reviews
+- Analytics dashboard for revenue, quote acceptance, open invoices, completed jobs, and overdue follow-ups
+- Settings page for business profile, default tax rate, service area, currency, and AI mode
+- CSV export endpoints for customers and jobs
+
+## Architecture
+
+```text
+FastAPI app
+  routes/        HTTP endpoints and page actions
+  services/      business logic for CRM, jobs, quotes, invoices, analytics, AI
+  models.py      SQLModel tables and relationships
+  schemas.py     Pydantic response/data contracts
+  ai.py          OpenAI + mock extraction
+  templates/     Jinja2 UI
+  static/        CSS, JS, logo
+  tests/         pytest coverage
+```
+
+The app uses server-rendered HTML for speed and simplicity, SQLModel for typed relational data, and a service layer to keep workflow logic reusable and testable.
+
+## Code Tour
+
+- `app/main.py` wires FastAPI, static files, lifespan startup, routers, and demo seed behavior.
+- `app/models.py` defines the customer, job, quote, invoice, task, and settings tables.
+- `app/database.py` configures SQLite and creates the database parent directory automatically for CI, Docker, and fresh clones.
+- `app/ai.py` contains the OpenAI integration and deterministic mock parser.
+- `app/services/` contains workflow logic for customers, jobs, quotes, invoices, tasks, analytics, exports, and AI.
+- `app/routes/` contains FastAPI route modules for the landing page, dashboard, CRUD pages, analytics, settings, and API endpoints.
+- `app/templates/` contains reusable Jinja2 components and polished SaaS pages.
+- `tests/` covers health, core pages, AI mock parsing, workflow creation, services, analytics, settings, quote totals, invoice balance, and task completion.
+- `.github/workflows/ci.yml` runs dependency install, Ruff, and pytest on GitHub Actions.
+
+## Best Files to Review
+
+- `app/main.py`
+- `app/models.py`
+- `app/database.py`
+- `app/ai.py`
+- `app/services/`
+- `app/routes/`
+- `app/templates/`
+- `tests/`
+- `.github/workflows/ci.yml`
 
 ## Tech Stack
 
@@ -54,6 +132,7 @@ Then it can create a customer, job, quote draft, and follow-up task in one click
 - pytest
 - Ruff
 - Docker
+- Docker Compose
 - GitHub Actions
 
 ## Quick Start
@@ -64,38 +143,53 @@ cd servicepilot-ai-python
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
 uvicorn app.main:app --reload
 ```
 
 Open [http://localhost:8000](http://localhost:8000).
 
-The app seeds demo data automatically when `DEMO_MODE=true`.
+The app seeds demo data automatically when `DEMO_MODE=true`, which is the default.
 
-## Optional OpenAI Setup
+## AI Mock Mode
 
-The app works without an API key using deterministic mock extraction. To use real AI extraction:
+The app works without an OpenAI API key. If `OPENAI_API_KEY` is missing, ServicePilot AI uses a deterministic mock parser that recognizes common service-business signals such as vehicle repair, apartment cleaning, landscaping, photography, tutoring, and home repair.
+
+This keeps local development, portfolio demos, Docker, and CI reliable without external API calls.
+
+To use real OpenAI extraction:
 
 ```bash
+cp .env.example .env
 OPENAI_API_KEY=sk-your-key
 OPENAI_MODEL=gpt-4.1-mini
 ```
 
 Never commit `.env`.
 
+## Tests and CI
+
+```bash
+ruff check .
+pytest -vv
+```
+
+GitHub Actions runs the same quality gate on every push and pull request:
+
+- install dependencies from `requirements.txt`
+- run `ruff check .`
+- run `pytest`
+- use safe mock-mode environment variables
+- create SQLite folders automatically at app startup
+
 ## Docker
 
 ```bash
-cp .env.example .env
 docker compose up --build
 ```
 
-## Tests and Linting
+Open [http://localhost:8000](http://localhost:8000).
 
-```bash
-make lint
-make test
-```
+Docker Compose sets a container-local SQLite database path and demo mode by default.
 
 ## Pages
 
@@ -109,25 +203,23 @@ make test
 - `/tasks` follow-up task list
 - `/analytics` business insights
 - `/settings` business and environment settings
+- `/api/health` health check
 
 ## Security Notes
 
 - API keys are loaded from environment variables.
-- `.env` and SQLite databases are ignored by git.
+- `.env` and SQLite database files are ignored by git.
 - Real AI output is validated through a Pydantic schema.
-- The mock extractor keeps demos safe and repeatable.
-
-## Portfolio Positioning
-
-This is not a generic chatbot. It is a vertical workflow app that shows product thinking, backend design, database modeling, AI integration, UI implementation, operational tooling, and deployment readiness.
+- Mock mode avoids external network calls in tests and demos.
+- The app contains no hardcoded local machine paths.
 
 ## Resume Bullets
 
 - Built ServicePilot AI, a Python FastAPI SaaS MVP that converts messy customer service messages into structured customers, jobs, quote drafts, invoices, tasks, and follow-ups.
-- Designed relational SQLModel data models for CRM, job tracking, quotes, invoices, business settings, and task workflows backed by SQLite.
-- Integrated OpenAI behind environment-based configuration with a deterministic mock AI fallback for safe demos, local development, and CI.
-- Implemented a polished server-rendered dashboard using Jinja2, HTMX-ready forms, Tailwind CSS, and reusable template components.
-- Added Docker, Docker Compose, pytest coverage, Ruff linting, GitHub Actions CI, seed data, and professional project documentation.
+- Designed SQLModel data models for CRM, job tracking, quotes, invoices, business settings, and task workflows backed by SQLite.
+- Integrated OpenAI behind environment-based configuration with a deterministic mock AI fallback for safe demos, local development, Docker, and CI.
+- Implemented a polished server-rendered dashboard using Jinja2, HTMX-ready forms, Tailwind CSS, reusable template components, and responsive dark SaaS UI patterns.
+- Added Docker, Docker Compose, pytest coverage, Ruff linting, GitHub Actions CI, seeded demo data, screenshots, and professional project documentation.
 
 ## Interview Talking Points
 
@@ -135,6 +227,19 @@ This is not a generic chatbot. It is a vertical workflow app that shows product 
 - How the mock AI fallback protects demos and CI from external API failures or missing secrets.
 - How SQLModel relationships connect customers, jobs, quotes, invoices, and tasks.
 - How FastAPI dependencies keep database sessions scoped and testable.
-- How the app handles API keys through `.env` and `.gitignore` instead of hardcoded secrets.
+- Why server-rendered templates plus HTMX are a strong fit for business CRUD apps.
+- How SQLite parent-directory creation fixed a real CI-only failure.
 - How the dashboard and analytics pages surface operational value for small service businesses.
-- What production upgrades would come next: auth, role-based access, migrations, background jobs, email/SMS sending, payments, and deployment observability.
+- What production upgrades would come next: authentication, role-based access, migrations, background jobs, SMS/email sending, payment links, audit logs, and deployment observability.
+
+## Production Roadmap
+
+- Add authentication and organization/workspace support.
+- Replace SQLite with Postgres for multi-user deployment.
+- Add Alembic migrations.
+- Add email/SMS sending for quotes, invoices, reminders, and review requests.
+- Add payment links and invoice PDF export.
+- Add background jobs for scheduled follow-ups.
+- Add audit logs and activity timeline events.
+- Add more granular permissions for staff users.
+- Add deployment manifests and observability.

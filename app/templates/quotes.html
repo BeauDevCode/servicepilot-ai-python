@@ -13,8 +13,12 @@
   </section>
   <section>
     <form class="mb-4 flex gap-3"><select class="input" name="status"><option value="">All statuses</option>{% for s in statuses %}<option value="{{ s.value }}" {% if status == s.value %}selected{% endif %}>{{ s.value }}</option>{% endfor %}</select><button class="btn-secondary">Filter</button></form>
-    <div class="grid gap-3">{% for quote in quotes %}{% include "components/quote_card.html" %}{% endfor %}</div>
+    <div class="grid gap-3">
+      {% for quote in quotes %}{% include "components/quote_card.html" %}{% endfor %}
+      {% if not quotes %}
+        {% with title="No quotes found", message="Create a quote from a job or draft one manually with a single line item.", href="/jobs", action="Review Jobs" %}{% include "components/empty_state.html" %}{% endwith %}
+      {% endif %}
+    </div>
   </section>
 </div>
 {% endblock %}
-

@@ -10,4 +10,4 @@ router = APIRouter(prefix="/analytics", tags=["analytics"])
 
 @router.get("")
 def analytics_page(request: Request, session: Session = Depends(get_session)):
-    return templates.TemplateResponse("analytics.html", {"request": request, "active": "analytics", "summary": analytics_summary(session)})
+    return templates.TemplateResponse(request, "analytics.html", {"active": "analytics", "summary": analytics_summary(session)})

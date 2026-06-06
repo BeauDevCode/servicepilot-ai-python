@@ -13,8 +13,9 @@ router = APIRouter(prefix="/customers", tags=["customers"])
 @router.get("")
 def customers_page(request: Request, q: str | None = None, status: str | None = None, session: Session = Depends(get_session)):
     return templates.TemplateResponse(
+        request,
         "customers.html",
-        {"request": request, "active": "customers", "customers": list_customers(session, q, status), "statuses": CustomerStatus, "q": q or "", "status": status or ""},
+        {"active": "customers", "customers": list_customers(session, q, status), "statuses": CustomerStatus, "q": q or "", "status": status or ""},
     )
 
 
@@ -38,9 +39,9 @@ def customer_detail(customer_id: int, request: Request, session: Session = Depen
     if not customer:
         raise HTTPException(404)
     return templates.TemplateResponse(
+        request,
         "customer_detail.html",
         {
-            "request": request,
             "active": "customers",
             "customer": customer,
             "jobs": list(session.exec(select(Job).where(Job.customer_id == customer_id))),

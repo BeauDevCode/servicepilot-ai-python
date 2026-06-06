@@ -1,10 +1,22 @@
+{% set page_meta = {
+  "dashboard": ("Dashboard", "A daily command center for leads, jobs, quotes, invoices, and follow-ups.", "/ai-assistant", "Create Job From Message"),
+  "ai": ("AI Intake", "Turn a messy text, DM, email, or phone note into an organized service workflow.", "/ai-assistant", "Analyze Request"),
+  "customers": ("Customers", "Track customer contact info, jobs, invoices, notes, and lifetime value.", "/customers", "Add Customer"),
+  "jobs": ("Jobs", "Manage service requests from intake through quote, schedule, completion, and payment.", "/jobs", "Add Job"),
+  "quotes": ("Quotes", "Draft professional estimates and convert approved work into invoices.", "/quotes", "Create Quote"),
+  "invoices": ("Invoices", "Track sent, overdue, and paid invoices with customer-friendly reminders.", "/invoices", "Create Invoice"),
+  "tasks": ("Tasks", "Stay on top of calls, reminders, appointment confirmations, and review requests.", "/tasks", "Add Task"),
+  "analytics": ("Analytics", "Measure revenue, quote acceptance, completed jobs, invoices, and follow-up risk.", "/analytics", "Review Metrics"),
+  "settings": ("Settings", "Configure business defaults and confirm AI mode and environment setup.", "/settings", "Save Defaults")
+} %}
+{% set meta = page_meta.get(active, ("ServicePilot AI", request.state.settings.app_tagline, "/ai-assistant", "Create Job From Message")) %}
 <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+  <div class="mx-auto flex min-h-20 max-w-7xl flex-col justify-center gap-3 px-4 py-4 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
     <div>
       <p class="text-xs uppercase tracking-[0.22em] text-cyan-300">Business command center</p>
-      <h1 class="text-lg font-semibold text-white">{{ request.state.settings.app_name }}</h1>
+      <h1 class="mt-1 text-2xl font-semibold text-white">{{ meta[0] }}</h1>
+      <p class="mt-1 max-w-2xl text-sm text-slate-400">{{ meta[1] }}</p>
     </div>
-    <a href="/ai-assistant" class="btn-primary">Create Job From Message</a>
+    <a href="{{ meta[2] }}" class="btn-primary shrink-0">{{ meta[3] }}</a>
   </div>
 </header>
-

@@ -1,10 +1,12 @@
 from app.ai import mock_extract_request
+from app.config import get_settings
 
 
 def test_mock_ai_extracts_mechanic_request():
     result = mock_extract_request("hey can you come saturday to fix my brakes i got a 2008 honda accord and grinding sound")
     assert result.service_category == "Mobile Mechanic"
     assert "brake" in result.job_title.lower() or "vehicle" in result.job_title.lower()
+    assert result.details == "2008 Honda Accord"
     assert result.suggested_quote_high > result.suggested_quote_low
     assert result.suggested_checklist
 
@@ -14,3 +16,7 @@ def test_mock_ai_extracts_cleaning_request():
     assert result.service_category == "Cleaning"
     assert "Best contact" in result.missing_information[0]
 
+
+def test_app_defaults_to_mock_ai_without_openai_key():
+    assert get_settings().openai_api_key in (None, "")
+    assert get_settings().ai_mode == "Mock mode"

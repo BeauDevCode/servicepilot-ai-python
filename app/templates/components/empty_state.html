@@ -1,0 +1,7 @@
+<div class="empty-state">
+  <p class="text-sm font-semibold text-white">{{ title }}</p>
+  <p class="mt-1 text-sm text-slate-400">{{ message }}</p>
+  {% if href and action %}
+    <a href="{{ href }}" class="btn-secondary mt-4">{{ action }}</a>
+  {% endif %}
+</div>

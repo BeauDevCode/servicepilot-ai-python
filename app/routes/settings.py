@@ -23,7 +23,11 @@ def get_business_settings(session: Session) -> BusinessSettings:
 
 @router.get("")
 def settings_page(request: Request, session: Session = Depends(get_session)):
-    return templates.TemplateResponse("settings.html", {"request": request, "active": "settings", "business": get_business_settings(session), "app_settings": get_settings()})
+    return templates.TemplateResponse(
+        request,
+        "settings.html",
+        {"active": "settings", "business": get_business_settings(session), "app_settings": get_settings()},
+    )
 
 
 @router.post("")

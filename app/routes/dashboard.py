@@ -23,9 +23,9 @@ def dashboard(request: Request, session: Session = Depends(get_session)):
         "Send a review request to completed customers.",
     ]
     return templates.TemplateResponse(
+        request,
         "dashboard.html",
         {
-            "request": request,
             "active": "dashboard",
             "stats": stats,
             "recent_jobs": recent_jobs,

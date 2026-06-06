@@ -1,2 +1,2 @@
-<span class="status-badge">{{ status }}</span>
-
+{% set badge_key = status|string|lower|replace(" ", "-") %}
+<span class="status-badge status-{{ badge_key }}">{{ status }}</span>
