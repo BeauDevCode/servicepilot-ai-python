@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block landing %}
+<main class="min-h-screen bg-slate-950">
+  <section class="relative overflow-hidden border-b border-slate-800">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,.16),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(16,185,129,.12),transparent_28%)]"></div>
+    <div class="relative mx-auto grid min-h-[88vh] max-w-7xl content-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_.95fr] lg:px-8">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">ServicePilot AI</p>
+        <h1 class="mt-5 max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">Run Your Service Business Without Losing Track of Customers</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">ServicePilot AI turns messy customer messages into organized jobs, quotes, invoices, tasks, and follow-ups.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn-primary" href="/dashboard">Open Dashboard</a>
+          <a class="btn-secondary" href="/ai-assistant">Create Job From Message</a>
+          <a class="btn-secondary" href="/customers">View Demo Data</a>
+        </div>
+      </div>
+      <div class="panel bg-slate-900/80">
+        <p class="text-sm text-slate-400">Messy message</p>
+        <div class="mt-3 rounded-md border border-slate-800 bg-slate-950 p-4 text-sm text-slate-300">hey can you come friday maybe afternoon to clean my apartment it's 2 bedroom 1 bath I got pets and need deep clean how much?</div>
+        <div class="mt-5 grid gap-3 sm:grid-cols-2">
+          <div class="mini-card"><span>Customer</span><strong>New Lead</strong></div>
+          <div class="mini-card"><span>Service</span><strong>Cleaning</strong></div>
+          <div class="mini-card"><span>Quote</span><strong>$150-$350</strong></div>
+          <div class="mini-card"><span>Next task</span><strong>Confirm address</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+    <div class="grid gap-6 lg:grid-cols-3">
+      <div><h2 class="text-2xl font-semibold text-white">Customer requests are messy.</h2><p class="mt-3 text-slate-400">Texts, DMs, phone notes, and emails hide the details a service business needs to schedule and get paid.</p></div>
+      <div><h2 class="text-2xl font-semibold text-white">AI organizes the workflow.</h2><p class="mt-3 text-slate-400">Paste a message and get a customer profile, job ticket, quote draft, checklist, follow-up, and invoice path.</p></div>
+      <div><h2 class="text-2xl font-semibold text-white">Built for portfolio proof.</h2><p class="mt-3 text-slate-400">FastAPI, SQLModel, HTMX, Docker, CI, tests, secure key handling, and useful business CRUD in one Python-first app.</p></div>
+    </div>
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {% for feature in ["AI Job Intake","Customer CRM","Quote Generator","Invoice Tracker","Task Checklist","Follow-Up Assistant","Revenue Dashboard","Exportable Records","Secure Backend"] %}
+      <div class="panel"><h3 class="font-semibold text-white">{{ feature }}</h3><p class="mt-2 text-sm text-slate-400">Practical workflow support for local service operators and freelancers.</p></div>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock %}
+

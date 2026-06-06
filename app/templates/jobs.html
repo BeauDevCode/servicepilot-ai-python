@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid gap-6 xl:grid-cols-[.8fr_1.2fr]">
+  <section class="panel">
+    <h2 class="text-xl font-semibold text-white">Add Job</h2>
+    <form method="post" class="mt-4 space-y-3">
+      <select class="input" name="customer_id"><option value="">No customer</option>{% for customer in customers %}<option value="{{ customer.id }}">{{ customer.name }}</option>{% endfor %}</select>
+      <input class="input" name="title" placeholder="Job title" required>
+      <textarea class="input" name="description" rows="4" placeholder="Description" required></textarea>
+      <input class="input" name="service_type" placeholder="Service type">
+      <div class="grid gap-3 sm:grid-cols-2">
+        <select class="input" name="status">{% for s in statuses %}<option value="{{ s.value }}">{{ s.value }}</option>{% endfor %}</select>
+        <select class="input" name="priority">{% for p in priorities %}<option value="{{ p.value }}">{{ p.value }}</option>{% endfor %}</select>
+      </div>
+      <input class="input" type="datetime-local" name="scheduled_date">
+      <input class="input" name="location" placeholder="Location">
+      <input class="input" type="number" step="0.01" name="estimated_price" placeholder="Estimated price">
+      <button class="btn-primary w-full">Add Job</button>
+    </form>
+  </section>
+  <section>
+    <form class="mb-4 grid gap-3 md:grid-cols-[1fr_auto_auto_auto]">
+      <input class="input" name="q" value="{{ q }}" placeholder="Search jobs">
+      <select class="input" name="status"><option value="">All statuses</option>{% for s in statuses %}<option value="{{ s.value }}" {% if status == s.value %}selected{% endif %}>{{ s.value }}</option>{% endfor %}</select>
+      <select class="input" name="service_type"><option value="">All services</option>{% for s in services %}<option value="{{ s }}" {% if service_type == s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select>
+      <button class="btn-secondary">Filter</button>
+    </form>
+    <div class="grid gap-3">{% for job in jobs %}{% include "components/job_card.html" %}{% endfor %}</div>
+  </section>
+</div>
+{% endblock %}
+

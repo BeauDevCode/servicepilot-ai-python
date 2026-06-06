@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ request.state.settings.app_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}">
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    {% if active == "landing" %}
+      {% block landing %}{% endblock %}
+    {% else %}
+      <div class="min-h-screen lg:flex">
+        {% include "components/sidebar.html" %}
+        <main class="min-w-0 flex-1">
+          {% include "components/header.html" %}
+          <section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            {% block content %}{% endblock %}
+          </section>
+        </main>
+      </div>
+    {% endif %}
+    <script src="{{ url_for('static', path='js/app.js') }}"></script>
+  </body>
+</html>
+

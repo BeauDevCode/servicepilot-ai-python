@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+  {% with label="Total Customers", value=stats.total_customers, hint="CRM records" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Open Jobs", value=stats.open_jobs, hint="Active workflow" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Pending Quotes", value=stats.pending_quotes, hint="Draft or sent" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Unpaid Invoices", value=stats.unpaid_invoices, hint="Sent or overdue" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Completed Jobs", value=stats.completed_jobs, hint="Closed work" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Monthly Revenue", value=stats.estimated_monthly_revenue|money, hint="Paid invoices" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Overdue Follow-ups", value=stats.overdue_followups, hint="Needs attention" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Tasks Due Today", value=stats.tasks_due_today, hint="Today's calls" %}{% include "components/stat_card.html" %}{% endwith %}
+</div>
+<div class="mt-6 grid gap-6 xl:grid-cols-[1.35fr_.65fr]">
+  <section class="panel">
+    <div class="section-head"><h2>Recent Customer Requests</h2><a href="/jobs">View all</a></div>
+    <div class="mt-4 grid gap-3">
+      {% for job in recent_jobs %}{% include "components/job_card.html" %}{% endfor %}
+    </div>
+  </section>
+  <section class="panel">
+    <div class="section-head"><h2>AI Suggestions</h2><a href="/ai-assistant">Intake</a></div>
+    <div class="mt-4 space-y-3">
+      {% for suggestion in suggestions %}
+      <div class="rounded-md border border-slate-800 bg-slate-950 p-3 text-sm text-slate-300">{{ suggestion }}</div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+<div class="mt-6 grid gap-6 lg:grid-cols-3">
+  <section class="panel">
+    <h2 class="text-base font-semibold text-white">Upcoming Jobs</h2>
+    <div class="mt-4 space-y-3">{% for job in upcoming_jobs %}<p class="text-sm text-slate-300">{{ job.scheduled_date|date }} · {{ job.title }}</p>{% else %}<p class="text-sm text-slate-500">No scheduled jobs yet.</p>{% endfor %}</div>
+  </section>
+  <section class="panel">
+    <h2 class="text-base font-semibold text-white">Revenue Summary</h2>
+    <div class="mt-4 space-y-3">{% for invoice in invoices %}<p class="flex justify-between text-sm"><span class="text-slate-300">{{ invoice.invoice_number }}</span><span>{{ invoice.total|money }}</span></p>{% endfor %}</div>
+  </section>
+  <section class="panel">
+    <h2 class="text-base font-semibold text-white">Jobs By Status</h2>
+    <div class="mt-4 space-y-3">{% for job in recent_jobs %}<p class="flex justify-between text-sm"><span class="text-slate-300">{{ job.title }}</span><span>{{ job.status.value }}</span></p>{% endfor %}</div>
+  </section>
+</div>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid gap-6 xl:grid-cols-[.8fr_1.2fr]">
+  <section class="panel">
+    <h2 class="text-xl font-semibold text-white">Add Task</h2>
+    <form method="post" class="mt-4 space-y-3">
+      <input class="input" name="title" placeholder="Task title" required>
+      <textarea class="input" name="description" rows="3" placeholder="Description"></textarea>
+      <select class="input" name="customer_id"><option value="">Customer</option>{% for c in customers %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+      <select class="input" name="job_id"><option value="">Job</option>{% for job in jobs %}<option value="{{ job.id }}">{{ job.title }}</option>{% endfor %}</select>
+      <input class="input" type="date" name="due_date_value">
+      <select class="input" name="priority">{% for p in priorities %}<option value="{{ p.value }}">{{ p.value }}</option>{% endfor %}</select>
+      <button class="btn-primary w-full">Add Task</button>
+    </form>
+  </section>
+  <section>
+    <div class="mb-4 flex flex-wrap gap-3"><a class="btn-secondary" href="/tasks">All</a><a class="btn-secondary" href="/tasks?completed=false">Open</a><a class="btn-secondary" href="/tasks?completed=true">Completed</a></div>
+    <div class="grid gap-3">
+      {% for task in tasks %}
+      <div class="panel">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 class="font-semibold text-white">{{ task.title }}</h3>
+            <p class="mt-1 text-sm text-slate-400">{{ task.description or "No description" }}</p>
+            <p class="mt-2 text-xs text-slate-500">{{ task.due_date|date }} · {{ task.priority.value }}</p>
+          </div>
+          {% if not task.completed %}<form method="post" action="/tasks/{{ task.id }}/complete"><button class="btn-secondary">Complete</button></form>{% else %}<span class="status-badge">Done</span>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}
+

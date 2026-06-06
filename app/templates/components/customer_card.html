@@ -1,0 +1,11 @@
+<a href="/customers/{{ customer.id }}" class="panel block hover:border-cyan-500/60">
+  <div class="flex items-start justify-between gap-3">
+    <div>
+      <h3 class="font-semibold text-white">{{ customer.name }}</h3>
+      <p class="mt-1 text-sm text-slate-400">{{ customer.email or "No email" }} · {{ customer.phone or "No phone" }}</p>
+      <p class="mt-2 text-xs text-slate-500">{{ customer.tags or "No tags" }}</p>
+    </div>
+    {% with status=customer.status.value %}{% include "components/status_badge.html" %}{% endwith %}
+  </div>
+</a>
+

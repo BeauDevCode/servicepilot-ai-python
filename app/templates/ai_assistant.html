@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid gap-6 xl:grid-cols-[.9fr_1.1fr]">
+  <section class="panel">
+    <h2 class="text-xl font-semibold text-white">AI Job Intake</h2>
+    <p class="mt-2 text-sm text-slate-400">Paste a text, DM, email, or phone note. Real OpenAI extraction is used when `OPENAI_API_KEY` is configured; otherwise the mock extractor keeps the product usable.</p>
+    <form method="post" action="/ai-assistant" class="mt-5 space-y-4">
+      <textarea name="message" rows="11" class="input" required>{{ message }}</textarea>
+      <button class="btn-primary w-full" type="submit">Analyze Request</button>
+    </form>
+  </section>
+  <section class="panel">
+    <div class="section-head"><h2>Structured Intake</h2><span class="text-xs text-slate-500">{{ request.state.settings.ai_mode }}</span></div>
+    {% if result %}
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <div class="mini-card"><span>Customer</span><strong>{{ result.customer_name }}</strong></div>
+        <div class="mini-card"><span>Service</span><strong>{{ result.service_category }}</strong></div>
+        <div class="mini-card"><span>Urgency</span><strong>{{ result.urgency }}</strong></div>
+        <div class="mini-card"><span>Quote Range</span><strong>{{ result.suggested_quote_low|money }} - {{ result.suggested_quote_high|money }}</strong></div>
+      </div>
+      <div class="mt-5 grid gap-5 lg:grid-cols-2">
+        <div>
+          <h3 class="font-semibold text-white">{{ result.job_title }}</h3>
+          <p class="mt-2 text-sm text-slate-400">{{ result.job_description }}</p>
+          <p class="mt-3 text-sm text-slate-300">Preferred: {{ result.preferred_date_time or "Not provided" }}</p>
+          <p class="text-sm text-slate-300">Details: {{ result.details or "Needs confirmation" }}</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white">Missing Info</h3>
+          <ul class="mt-2 space-y-2 text-sm text-slate-400">{% for item in result.missing_information %}<li>{{ item }}</li>{% else %}<li>Ready to create workflow.</li>{% endfor %}</ul>
+        </div>
+      </div>
+      <div class="mt-5">
+        <h3 class="font-semibold text-white">Checklist</h3>
+        <div class="mt-2 grid gap-2 sm:grid-cols-2">{% for item in result.suggested_checklist %}<div class="rounded-md border border-slate-800 bg-slate-950 p-3 text-sm text-slate-300">{{ item }}</div>{% endfor %}</div>
+      </div>
+      <div class="mt-5 rounded-md border border-cyan-500/30 bg-cyan-950/20 p-4 text-sm text-cyan-100">{{ result.follow_up_message }}</div>
+      <form method="post" action="/ai-assistant/create-workflow" class="mt-5">
+        <input type="hidden" name="message" value="{{ message }}">
+        <button class="btn-primary" type="submit">Create Customer, Job, Quote Draft, and Follow-Up Task</button>
+      </form>
+    {% else %}
+      <div class="mt-4 rounded-md border border-dashed border-slate-700 p-8 text-center text-slate-500">Your extracted customer, job, quote, checklist, and follow-up will appear here.</div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
+

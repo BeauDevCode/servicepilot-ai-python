@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid gap-6 xl:grid-cols-[.9fr_1.1fr]">
+  <section class="panel">
+    <h2 class="text-xl font-semibold text-white">Business Settings</h2>
+    <form method="post" class="mt-4 space-y-3">
+      <input class="input" name="business_name" value="{{ business.business_name }}">
+      <input class="input" name="owner_name" value="{{ business.owner_name }}">
+      <input class="input" name="email" value="{{ business.email }}">
+      <input class="input" name="phone" value="{{ business.phone }}">
+      <input class="input" type="number" step="0.01" name="default_tax_rate" value="{{ business.default_tax_rate }}">
+      <input class="input" name="default_service_area" value="{{ business.default_service_area }}">
+      <input class="input" name="preferred_currency" value="{{ business.preferred_currency }}">
+      <button class="btn-primary w-full">Save Settings</button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2 class="text-xl font-semibold text-white">Environment</h2>
+    <div class="mt-4 grid gap-3">
+      <div class="mini-card"><span>AI mode</span><strong>{{ app_settings.ai_mode }}</strong></div>
+      <div class="mini-card"><span>Database</span><strong>SQLite via SQLModel</strong></div>
+      <div class="mini-card"><span>API key</span><strong>Stored in OPENAI_API_KEY, never committed</strong></div>
+    </div>
+    <pre class="mt-5 overflow-x-auto rounded-md border border-slate-800 bg-slate-950 p-4 text-xs text-slate-300">cp .env.example .env
+OPENAI_API_KEY=sk-your-key
+uvicorn app.main:app --reload</pre>
+  </section>
+</div>
+{% endblock %}
+

@@ -1,0 +1,17 @@
+[project]
+name = "servicepilot-ai-python"
+version = "1.0.0"
+description = "FastAPI app that turns messy customer service requests into jobs, quotes, invoices, and follow-ups."
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 140
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["B008", "E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

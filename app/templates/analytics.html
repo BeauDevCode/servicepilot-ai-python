@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+  {% with label="Revenue This Month", value=summary.revenue_this_month|money, hint="Paid invoices" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Open Invoices", value=summary.open_invoices, hint="Needs payment" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Quote Acceptance", value=summary.quote_acceptance_rate ~ "%", hint="Accepted quotes" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Average Job Value", value=summary.average_job_value|money, hint="Paid jobs" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Jobs Completed", value=summary.jobs_completed, hint="Closed work" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Tasks Completed", value=summary.tasks_completed, hint="Operational progress" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Customers Added", value=summary.customers_added, hint="CRM growth" %}{% include "components/stat_card.html" %}{% endwith %}
+  {% with label="Overdue Follow-ups", value=summary.followups_overdue, hint="Retention risk" %}{% include "components/stat_card.html" %}{% endwith %}
+</div>
+<section class="panel mt-6">
+  <h2 class="text-xl font-semibold text-white">Revenue By Service Type</h2>
+  <div class="mt-5 space-y-4">
+    {% for service, amount in summary.revenue_by_service.items() %}
+    <div>
+      <div class="flex justify-between text-sm"><span>{{ service }}</span><span>{{ amount|money }}</span></div>
+      <div class="mt-2 h-2 rounded-full bg-slate-800"><div class="h-2 rounded-full bg-cyan-400" style="width: {{ [100, (amount / 500 * 100)|round]|min }}%"></div></div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+
