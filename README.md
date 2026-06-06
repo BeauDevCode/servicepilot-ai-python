@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/BeauDevCode/servicepilot-ai-python/actions/workflows/ci.yml/badge.svg)](https://github.com/BeauDevCode/servicepilot-ai-python/actions/workflows/ci.yml)
 
+**Live Demo:** [https://servicepilot-ai-python.onrender.com](https://servicepilot-ai-python.onrender.com)
+
 **Turn messy customer requests into organized jobs, quotes, invoices, and follow-ups.**
 
 ServicePilot AI is a Python-first SaaS MVP for small local service businesses and freelancers. It helps mobile mechanics, cleaners, tutors, landscapers, photographers, handymen, barbers, and student entrepreneurs convert scattered texts, DMs, emails, and phone notes into durable business records.
