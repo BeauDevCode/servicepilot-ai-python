@@ -8,7 +8,8 @@
 
 ServicePilot AI is a Python-first SaaS MVP for small local service businesses and freelancers. It helps mobile mechanics, cleaners, tutors, landscapers, photographers, handymen, barbers, and student entrepreneurs convert scattered texts, DMs, emails, and phone notes into durable business records.
 
-**Reviewer guide:** [`docs/REVIEW_GUIDE.md`](docs/REVIEW_GUIDE.md)
+**Reviewer guide:** [`docs/REVIEW_GUIDE.md`](docs/REVIEW_GUIDE.md)  
+**Case study:** [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md)
 
 ## Why This Project Matters
 
@@ -113,6 +114,7 @@ The app uses server-rendered HTML for speed and simplicity, SQLModel for typed r
 ## Best Files to Review
 
 - `docs/REVIEW_GUIDE.md`
+- `docs/CASE_STUDY.md`
 - `app/main.py`
 - `app/models.py`
 - `app/database.py`
