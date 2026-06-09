@@ -8,6 +8,8 @@
 
 ServicePilot AI is a Python-first SaaS MVP for small local service businesses and freelancers. It helps mobile mechanics, cleaners, tutors, landscapers, photographers, handymen, barbers, and student entrepreneurs convert scattered texts, DMs, emails, and phone notes into durable business records.
 
+**Reviewer guide:** [`docs/REVIEW_GUIDE.md`](docs/REVIEW_GUIDE.md)
+
 ## Why This Project Matters
 
 ServicePilot AI is a vertical workflow SaaS app, not a generic chatbot. The AI assistant does not stop at a conversational answer. It turns messy customer language into structured records: customers, jobs, quote drafts, invoices, follow-up tasks, checklists, and customer-ready messages.
@@ -110,6 +112,7 @@ The app uses server-rendered HTML for speed and simplicity, SQLModel for typed r
 
 ## Best Files to Review
 
+- `docs/REVIEW_GUIDE.md`
 - `app/main.py`
 - `app/models.py`
 - `app/database.py`
@@ -228,20 +231,3 @@ Docker Compose sets a container-local SQLite database path and demo mode by defa
 - Why this is a workflow product instead of a generic chatbot: AI output becomes durable business records.
 - How the mock AI fallback protects demos and CI from external API failures or missing secrets.
 - How SQLModel relationships connect customers, jobs, quotes, invoices, and tasks.
-- How FastAPI dependencies keep database sessions scoped and testable.
-- Why server-rendered templates plus HTMX are a strong fit for business CRUD apps.
-- How SQLite parent-directory creation fixed a real CI-only failure.
-- How the dashboard and analytics pages surface operational value for small service businesses.
-- What production upgrades would come next: authentication, role-based access, migrations, background jobs, SMS/email sending, payment links, audit logs, and deployment observability.
-
-## Production Roadmap
-
-- Add authentication and organization/workspace support.
-- Replace SQLite with Postgres for multi-user deployment.
-- Add Alembic migrations.
-- Add email/SMS sending for quotes, invoices, reminders, and review requests.
-- Add payment links and invoice PDF export.
-- Add background jobs for scheduled follow-ups.
-- Add audit logs and activity timeline events.
-- Add more granular permissions for staff users.
-- Add deployment manifests and observability.
