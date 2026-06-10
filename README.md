@@ -10,6 +10,8 @@ ServicePilot AI is a Python-first SaaS MVP for small local service businesses an
 
 **Contributing:** [`CONTRIBUTING.md`](CONTRIBUTING.md)  
 **Roadmap:** [`ROADMAP.md`](ROADMAP.md)  
+**Public launch:** [`docs/PUBLIC_LAUNCH.md`](docs/PUBLIC_LAUNCH.md)  
+**Security:** [`SECURITY.md`](SECURITY.md)  
 **Reviewer guide:** [`docs/REVIEW_GUIDE.md`](docs/REVIEW_GUIDE.md)  
 **Case study:** [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md)
 
@@ -117,6 +119,9 @@ The app uses server-rendered HTML for speed and simplicity, SQLModel for typed r
 
 - `CONTRIBUTING.md`
 - `ROADMAP.md`
+- `SECURITY.md`
+- `CODE_OF_CONDUCT.md`
+- `docs/PUBLIC_LAUNCH.md`
 - `docs/REVIEW_GUIDE.md`
 - `docs/CASE_STUDY.md`
 - `app/main.py`
