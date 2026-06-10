@@ -19,7 +19,13 @@ ServicePilot AI is a Python-first SaaS MVP for small local service businesses an
 
 ServicePilot AI is a vertical workflow SaaS app, not a generic chatbot. The AI assistant does not stop at a conversational answer. It turns messy customer language into structured records: customers, jobs, quote drafts, invoices, follow-up tasks, checklists, and customer-ready messages.
 
-That makes the app useful as a real small-business workflow and strong as a portfolio project because it shows backend modeling, product thinking, UI design, AI integration, testing, Docker, and CI in one coherent Python application.
+That makes the app useful as a small-business workflow prototype and as a portfolio project because it shows backend modeling, product thinking, UI design, AI integration, testing, Docker, and CI in one coherent Python application.
+
+## Demo
+
+- **Live demo:** [https://servicepilot-ai-python.onrender.com](https://servicepilot-ai-python.onrender.com)
+- **Local demo:** run the Quick Start commands below, then open [http://localhost:8000](http://localhost:8000).
+- **Walkthrough media:** screenshots are included below. A short GIF walkthrough is not recorded yet; add it under `docs/screenshots/` when available.
 
 ## Screenshots
 
@@ -42,7 +48,7 @@ That makes the app useful as a real small-business workflow and strong as a port
 ## Recruiter Quick Review
 
 - **Backend:** FastAPI routes, dependency-injected database sessions, SQLModel persistence, Pydantic AI schema validation.
-- **Frontend:** Server-rendered Jinja2 templates, HTMX-ready forms, Tailwind CSS, polished dark SaaS dashboard.
+- **Frontend:** Server-rendered Jinja2 templates, HTMX-ready forms, Tailwind CSS, responsive dashboard pages.
 - **AI:** OpenAI integration behind `OPENAI_API_KEY`, with deterministic mock mode when no key exists.
 - **Data model:** Customers, jobs, quotes, invoices, tasks, and business settings with real relationships.
 - **Quality:** pytest, Ruff, GitHub Actions, Dockerfile, Docker Compose, seeded demo data, and clear docs.
@@ -136,7 +142,7 @@ The app uses server-rendered HTML for speed and simplicity, SQLModel for typed r
 
 ## Tech Stack
 
-- Python 3.11+
+- Python 3.12 for the verified local and CI path; package metadata allows Python 3.11+
 - FastAPI
 - Jinja2
 - HTMX
@@ -156,10 +162,23 @@ The app uses server-rendered HTML for speed and simplicity, SQLModel for typed r
 ```bash
 git clone https://github.com/BeauDevCode/servicepilot-ai-python.git
 cd servicepilot-ai-python
-python -m venv .venv
+
+# macOS/Linux
+python3.12 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+python -m pip install -r requirements.txt
+python -m uvicorn app.main:app --reload
+```
+
+```powershell
+git clone https://github.com/BeauDevCode/servicepilot-ai-python.git
+cd servicepilot-ai-python
+
+# Windows PowerShell
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m uvicorn app.main:app --reload
 ```
 
 Open [http://localhost:8000](http://localhost:8000).
@@ -182,12 +201,31 @@ OPENAI_MODEL=gpt-4.1-mini
 
 Never commit `.env`.
 
-## Tests and CI
+## Validation
 
 ```bash
-ruff check .
-pytest -vv
+python --version
+python -m pip install -r requirements.txt
+python -m ruff check .
+python -m pytest -vv
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
+
+In another terminal, confirm the local health endpoint:
+
+```bash
+curl http://127.0.0.1:8000/api/health
+```
+
+Expected response:
+
+```json
+{"status":"ok"}
+```
+
+This fresh-clone pass was verified with Python 3.12.13 on Windows: dependency install, Ruff, pytest, and a local `/api/health` smoke test all passed.
+
+## Tests and CI
 
 GitHub Actions runs the same quality gate on every push and pull request:
 
@@ -228,6 +266,18 @@ Docker Compose sets a container-local SQLite database path and demo mode by defa
 - Real AI output is validated through a Pydantic schema.
 - Mock mode avoids external network calls in tests and demos.
 - The app contains no hardcoded local machine paths.
+
+## Limitations
+
+- The app is a portfolio MVP, not a production multi-tenant SaaS platform.
+- Authentication, account ownership, team roles, and payment processing are not implemented.
+- SQLite is the default persistence layer; production deployments should use a managed database and migration workflow.
+- Real OpenAI extraction requires `OPENAI_API_KEY`, and AI-generated records should still be reviewed before sending customer-facing messages.
+- Python 3.12 is the verified setup path. Newer Python versions may need compatible binary wheels or local compiler tooling for dependencies such as `pydantic-core`.
+
+## Roadmap
+
+The active roadmap lives in [`ROADMAP.md`](ROADMAP.md). Near-term work is focused on a short demo recording, clearer contributor docs, more export/workflow tests, mobile layout improvements, and documenting the future auth/workspace path.
 
 ## Resume Bullets
 
