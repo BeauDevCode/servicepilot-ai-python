@@ -5,8 +5,7 @@ ServicePilot AI is a portfolio MVP focused on local service-business workflow.
 ## Near term
 
 - Add a short demo recording to the README.
-- Improve contributor documentation.
-- Add more tests around export and workflow behavior.
+- Add more workflow tests beyond the covered customer and job CSV exports.
 - Improve mobile layout for dashboard and forms.
 - Document future login and workspace support.
 

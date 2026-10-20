@@ -80,3 +80,29 @@ def test_settings_update_route():
         assert response.status_code == 303
         settings_page = client.get("/settings")
         assert "QA Service Co." in settings_page.text
+
+
+def test_customers_page_links_to_csv_export():
+    with TestClient(app) as client:
+        response = client.get("/customers")
+        assert response.status_code == 200
+        assert 'href="/api/exports/customers.csv"' in response.text
+
+
+def test_jobs_page_links_to_csv_export():
+    with TestClient(app) as client:
+        response = client.get("/jobs")
+        assert response.status_code == 200
+        assert 'href="/api/exports/jobs.csv"' in response.text
+
+
+def test_csv_routes_return_downloads():
+    with TestClient(app) as client:
+        for path, filename in [
+            ("/api/exports/customers.csv", "customers.csv"),
+            ("/api/exports/jobs.csv", "jobs.csv"),
+        ]:
+            response = client.get(path)
+            assert response.status_code == 200
+            assert response.headers["content-type"].startswith("text/csv")
+            assert response.headers["content-disposition"] == f'attachment; filename="{filename}"'

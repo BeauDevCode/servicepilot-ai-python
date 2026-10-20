@@ -14,6 +14,7 @@
     </form>
   </section>
   <section>
+    <div class="mb-4 flex justify-end"><a href="/api/exports/customers.csv" class="btn-secondary">Export Customers CSV</a></div>
     <form class="mb-4 grid gap-3 sm:grid-cols-[1fr_auto_auto]">
       <input class="input" name="q" value="{{ q }}" placeholder="Search customers">
       <select class="input" name="status"><option value="">All statuses</option>{% for s in statuses %}<option value="{{ s.value }}" {% if status == s.value %}selected{% endif %}>{{ s.value }}</option>{% endfor %}</select>

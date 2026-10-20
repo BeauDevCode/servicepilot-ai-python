@@ -15,8 +15,8 @@ This guide is for recruiters, engineers, and reviewers who want to inspect the p
 ## Validation commands
 
 ```bash
-ruff check .
-pytest -vv
+python -m ruff check .
+python -m pytest -vv
 ```
 
 Docker path:
@@ -39,3 +39,4 @@ docker compose up --build
 - The UI is server-rendered rather than a separate frontend app.
 - The AI flow is intentionally constrained to structured intake rather than broad chat behavior.
 - The project is a portfolio MVP, not a production SaaS with auth, billing, or multi-tenant controls.
+- The public demo is shared and unauthenticated. Review it with fictional data only.

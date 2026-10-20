@@ -14,10 +14,18 @@ def health() -> dict[str, str]:
 
 @router.get("/exports/customers.csv")
 def customers_csv(session: Session = Depends(get_session)):
-    return Response(export_customers_csv(session), media_type="text/csv")
+    return Response(
+        export_customers_csv(session),
+        media_type="text/csv",
+        headers={"Content-Disposition": 'attachment; filename="customers.csv"'},
+    )
 
 
 @router.get("/exports/jobs.csv")
 def jobs_csv(session: Session = Depends(get_session)):
-    return Response(export_jobs_csv(session), media_type="text/csv")
+    return Response(
+        export_jobs_csv(session),
+        media_type="text/csv",
+        headers={"Content-Disposition": 'attachment; filename="jobs.csv"'},
+    )
 

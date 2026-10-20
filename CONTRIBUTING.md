@@ -5,21 +5,23 @@ Thanks for taking a look at ServicePilot AI.
 ## Local setup
 
 ```bash
-python -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+python -m pip install -r requirements.txt
+python -m uvicorn app.main:app --reload
 ```
 
-Open `http://localhost:8000`.
+On Windows PowerShell, use `py -3.12 -m venv .venv` and `.\.venv\Scripts\Activate.ps1` instead of the first two commands. Open `http://localhost:8000` and check `http://localhost:8000/api/health`.
+
+The app seeds fictional records when `DEMO_MODE=true` (the default). Use fake customer details in the shared public demo.
 
 ## Checks
 
 Run these before opening a pull request:
 
 ```bash
-ruff check .
-pytest -vv
+python -m ruff check .
+python -m pytest -vv
 ```
 
 ## Good first contributions
@@ -41,5 +43,7 @@ Please include:
 - why it changed
 - how you tested it
 - screenshots for UI changes
+
+For data changes, include a test that exercises the affected service or route. Keep database files, `.env`, API keys, and real customer information out of commits.
 
 Keep changes focused and small when possible.
