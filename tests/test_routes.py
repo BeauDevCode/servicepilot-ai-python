@@ -11,6 +11,14 @@ def test_dashboard_and_core_pages_render():
             assert "ServicePilot AI" in response.text
 
 
+def test_demo_pages_warn_visitors_to_use_fictional_data():
+    with TestClient(app) as client:
+        for path in ["/", "/customers", "/jobs"]:
+            response = client.get(path)
+            assert response.status_code == 200
+            assert "Use fictional customer details" in response.text
+
+
 def test_ai_intake_post_renders_extraction():
     with TestClient(app) as client:
         response = client.post("/ai-assistant", data={"message": "can you clean my 2 bedroom apartment friday afternoon with pets"})
