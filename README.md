@@ -27,6 +27,8 @@ That makes the app useful as a small-business workflow prototype and as a portfo
 - **Local demo:** run the Quick Start commands below, then open [http://localhost:8000](http://localhost:8000).
 - **Walkthrough media:** screenshots are included below. A short GIF walkthrough is not recorded yet; add it under `docs/screenshots/` when available.
 
+The live instance is a shared, unauthenticated demo. Use fictional customer details only: other visitors can view, change, and export records in that shared database.
+
 ## Screenshots
 
 | Dashboard | AI Intake |
@@ -91,7 +93,7 @@ Then one click creates:
 - Task checklist for calls, confirmations, reminders, and reviews
 - Analytics dashboard for revenue, quote acceptance, open invoices, completed jobs, and overdue follow-ups
 - Settings page for business profile, default tax rate, service area, currency, and AI mode
-- CSV export endpoints for customers and jobs
+- Customer and job CSV downloads from their list pages, with spreadsheet formula protection for text fields
 
 ## Architecture
 
@@ -223,13 +225,14 @@ Expected response:
 {"status":"ok"}
 ```
 
-This fresh-clone pass was verified with Python 3.12.13 on Windows: dependency install, Ruff, pytest, and a local `/api/health` smoke test all passed.
+The setup was verified with Python 3.12 on Windows and macOS. The validation commands above cover linting, tests, and a local `/api/health` smoke test.
 
 ## Tests and CI
 
 GitHub Actions runs the same quality gate on every push and pull request:
 
 - install dependencies from `requirements.txt`
+- audit pinned dependencies with `pip-audit`
 - run `ruff check .`
 - run `pytest`
 - use safe mock-mode environment variables
@@ -265,19 +268,21 @@ Docker Compose sets a container-local SQLite database path and demo mode by defa
 - `.env` and SQLite database files are ignored by git.
 - Real AI output is validated through a Pydantic schema.
 - Mock mode avoids external network calls in tests and demos.
+- CSV downloads prefix formula-like text with a tab so spreadsheet apps treat it as text. The tab remains part of the exported value.
 - The app contains no hardcoded local machine paths.
 
 ## Limitations
 
 - The app is a portfolio MVP, not a production multi-tenant SaaS platform.
 - Authentication, account ownership, team roles, and payment processing are not implemented.
+- The public demo stores visitor changes in one shared database and is unsuitable for real customer information.
 - SQLite is the default persistence layer; production deployments should use a managed database and migration workflow.
 - Real OpenAI extraction requires `OPENAI_API_KEY`, and AI-generated records should still be reviewed before sending customer-facing messages.
 - Python 3.12 is the verified setup path. Newer Python versions may need compatible binary wheels or local compiler tooling for dependencies such as `pydantic-core`.
 
 ## Roadmap
 
-The active roadmap lives in [`ROADMAP.md`](ROADMAP.md). Near-term work is focused on a short demo recording, clearer contributor docs, more export/workflow tests, mobile layout improvements, and documenting the future auth/workspace path.
+The active roadmap lives in [`ROADMAP.md`](ROADMAP.md). Near-term work is focused on a short demo recording, mobile layout improvements, and the future auth/workspace path.
 
 ## Resume Bullets
 
