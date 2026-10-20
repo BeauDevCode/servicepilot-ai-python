@@ -4,11 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ request.state.settings.app_name }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', path='img/logo.svg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}">
   </head>
   <body class="bg-slate-950 text-slate-100">
+    <div role="note" class="border-b border-amber-300/30 bg-amber-300/10 px-4 py-2 text-center text-xs leading-5 text-amber-100 sm:text-sm">
+      <strong>Shared demo.</strong> Use fictional customer details only. Other visitors can view, change, and export records.
+    </div>
     {% if active == "landing" %}
       {% block landing %}{% endblock %}
     {% else %}
